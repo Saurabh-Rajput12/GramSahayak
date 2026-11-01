@@ -7,7 +7,8 @@ const {
   getMyProducts,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  toggleAvailability
 } = require('../controllers/productController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -23,6 +24,7 @@ router.get('/:id', getProductById);
 // Protected routes: Add, edit, or delete products
 router.post('/', protect, createProduct);
 router.put('/:id', protect, updateProduct);
+router.put('/:id/toggle-stock', protect, toggleAvailability);
 router.delete('/:id', protect, deleteProduct);
 
 module.exports = router;

@@ -28,8 +28,16 @@ const productSchema = new mongoose.Schema({
   },
   unit: {
     type: String,
-    enum: ['kg', 'litre', 'piece'],
+    enum: ['kg', 'litre', 'piece', 'quintal', 'dozen'],
     default: 'kg'
+  },
+  location: {
+    type: String,
+    default: 'Gram Panchayat Rampur'
+  },
+  contactPhone: {
+    type: String,
+    default: '9876543210'
   },
   description: {
     type: String,

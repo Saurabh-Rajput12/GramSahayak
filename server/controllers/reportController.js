@@ -2,13 +2,11 @@
 const User = require('../models/User');
 const Complaint = require('../models/Complaint');
 const Application = require('../models/Application');
-const Order = require('../models/Order');
 const Product = require('../models/Product');
-const Event = require('../models/Event');
-const Feedback = require('../models/Feedback');
 const Scheme = require('../models/Scheme');
+const Notice = require('../models/Notice');
 
-// Get village report summary using countDocuments
+// Get village report summary using simple countDocuments for mini project
 const getVillageSummary = async (req, res) => {
   try {
     // Total villagers registered in portal
@@ -29,19 +27,17 @@ const getVillageSummary = async (req, res) => {
     const rejectedApplications = await Application.countDocuments({ status: 'rejected' });
     const totalApplications = pendingApplications + approvedApplications + rejectedApplications;
 
-    // Total orders, market products, and events count
-    const totalOrders = await Order.countDocuments();
+    // Total market products, schemes, and notices count
     const totalProducts = await Product.countDocuments();
-    const totalEvents = await Event.countDocuments();
     const totalSchemes = await Scheme.countDocuments();
-
-    // Unread feedback waiting for review
-    const unreadFeedback = await Feedback.countDocuments({ isRead: false });
+    const totalNotices = await Notice.countDocuments();
 
     res.status(200).json({
       totalVillagers,
       blockedUsers,
       totalSchemes,
+      totalProducts,
+      totalNotices,
       complaints: {
         total: totalComplaints,
         open: openComplaints,
@@ -53,15 +49,11 @@ const getVillageSummary = async (req, res) => {
         pending: pendingApplications,
         approved: approvedApplications,
         rejected: rejectedApplications
-      },
-      totalOrders,
-      totalProducts,
-      totalEvents,
-      unreadFeedback
+      }
     });
   } catch (error) {
-    console.error('Get village summary error:', error.message);
-    res.status(500).json({ message: 'Server error generating village reports', error: error.message });
+    console.error('Village summary error:', error.message);
+    res.status(500).json({ message: 'Server error generating village summary', error: error.message });
   }
 };
 

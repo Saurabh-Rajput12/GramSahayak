@@ -1,8 +1,8 @@
-// Reusable card component for village marketplace produce and goods
+// Reusable card component for village marketplace produce sold directly by farmers
 import React from 'react';
 
-// ProductCard renders produce name, price with unit, category badge, and cart action button
-const ProductCard = ({ product, onViewDetails, onAddToCart }) => {
+// ProductCard renders produce name, price with unit, category badge, seller details, and contact button
+const ProductCard = ({ product, onContact }) => {
   // Category badge color helper
   const getCategoryBadgeClass = (category) => {
     switch (category) {
@@ -14,8 +14,6 @@ const ProductCard = ({ product, onViewDetails, onAddToCart }) => {
         return 'bg-warning text-dark';
       case 'fruits':
         return 'bg-danger text-white';
-      case 'handicrafts':
-        return 'bg-info text-dark';
       default:
         return 'bg-secondary text-white';
     }
@@ -45,44 +43,37 @@ const ProductCard = ({ product, onViewDetails, onAddToCart }) => {
           {product.name}
         </h5>
 
-        {/* Seller Info */}
+        {/* Seller Info & Location */}
+        <div className="small text-muted mb-1">
+          <i className="bi bi-person me-1"></i> Farmer: <strong>{product.seller?.name || 'Local Farmer'}</strong>
+        </div>
         <div className="small text-muted mb-2">
-          <i className="bi bi-person me-1"></i> Sold by: <strong>{product.seller?.name || 'Local Villager'}</strong>
+          <i className="bi bi-geo-alt me-1"></i> {product.location || 'Gram Panchayat Rampur'}
         </div>
 
         {/* Description snippet */}
         <p className="card-text text-secondary small flex-grow-1 mb-3">
           {product.description && product.description.length > 85
             ? `${product.description.substring(0, 85)}...`
-            : product.description || 'Farm-fresh rural produce direct from villager.'}
+            : product.description || 'Farm-fresh rural produce direct from farmer.'}
         </p>
 
-        {/* Price & Unit Display */}
+        {/* Price & Available Quantity */}
         <div className="bg-light p-2 rounded-3 mb-3 border d-flex justify-content-between align-items-center">
-          <span className="small text-muted">Price:</span>
+          <span className="small text-muted">Available: <strong>{product.quantity} {product.unit}</strong></span>
           <span className="fw-bold text-primary-green fs-5">
             ₹{product.price} <span className="small text-muted fw-normal">/ {product.unit}</span>
           </span>
         </div>
 
-        {/* Action Buttons */}
-        <div className="d-flex gap-2 mt-auto">
-          <button
-            type="button"
-            className="btn btn-outline-secondary btn-sm rounded-pill flex-grow-1"
-            onClick={() => onViewDetails(product)}
-          >
-            <i className="bi bi-eye me-1"></i> Details
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary btn-sm rounded-pill flex-grow-1 d-flex align-items-center justify-content-center gap-1"
-            onClick={() => onAddToCart(product)}
-            disabled={!product.isAvailable}
-          >
-            <i className="bi bi-cart-plus"></i> Add to Cart
-          </button>
-        </div>
+        {/* Action Button: View Details & Contact Farmer */}
+        <button
+          type="button"
+          className="btn btn-outline-success btn-sm rounded-pill w-100 d-flex align-items-center justify-content-center gap-1 py-2 fw-semibold"
+          onClick={() => onContact(product)}
+        >
+          <i className="bi bi-telephone me-1"></i> Contact Farmer (सम्पर्क करें)
+        </button>
       </div>
     </div>
   );

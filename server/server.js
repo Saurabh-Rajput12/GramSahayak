@@ -1,4 +1,4 @@
-// Main server entry point for Gram Sahayak backend application
+// Main server entry point for Gram Sahayak (College Mini Project)
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -7,21 +7,14 @@ const dotenv = require('dotenv');
 // Load environment variables from .env file
 dotenv.config();
 
-// Import all route modules
+// Import 5 core module routes + auth and reports
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const schemeRoutes = require('./routes/schemeRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 const complaintRoutes = require('./routes/complaintRoutes');
-const priceRoutes = require('./routes/priceRoutes');
-const noticeRoutes = require('./routes/noticeRoutes');
 const productRoutes = require('./routes/productRoutes');
-const cartRoutes = require('./routes/cartRoutes');
-const orderRoutes = require('./routes/orderRoutes');
-const eventRoutes = require('./routes/eventRoutes');
-const helplineRoutes = require('./routes/helplineRoutes');
-const feedbackRoutes = require('./routes/feedbackRoutes');
-const memberRoutes = require('./routes/memberRoutes');
+const noticeRoutes = require('./routes/noticeRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 
 const app = express();
@@ -48,24 +41,17 @@ connectDB();
 
 // Basic health check route
 app.get('/', (req, res) => {
-  res.json({ message: 'Gram Sahayak API is running smoothly' });
+  res.json({ message: 'Gram Sahayak Mini Project API is running smoothly' });
 });
 
-// Mount application API routes
+// Mount application API routes for 5 core modules
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/schemes', schemeRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/complaints', complaintRoutes);
-app.use('/api/prices', priceRoutes);
-app.use('/api/notices', noticeRoutes);
 app.use('/api/products', productRoutes);
-app.use('/api/cart', cartRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/events', eventRoutes);
-app.use('/api/helplines', helplineRoutes);
-app.use('/api/feedback', feedbackRoutes);
-app.use('/api/members', memberRoutes);
+app.use('/api/notices', noticeRoutes);
 app.use('/api/reports', reportRoutes);
 
 // Global error handling middleware for handling unexpected server errors

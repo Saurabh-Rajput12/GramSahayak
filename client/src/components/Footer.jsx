@@ -1,82 +1,63 @@
-// Footer component providing quick links, contact info, and official village portal notice
+// Footer component providing quick links and official village portal notice
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Footer renders structured responsive footer section
 const Footer = () => {
   return (
-    <footer className="bg-white border-top mt-auto py-5 text-secondary">
+    <footer className="bg-white border-top mt-auto py-4 text-secondary">
       <div className="container">
-        <div className="row g-4">
+        <div className="row g-4 align-items-center">
           {/* About Section */}
-          <div className="col-12 col-md-4">
-            <div className="d-flex align-items-center mb-3">
+          <div className="col-12 col-md-5">
+            <div className="d-flex align-items-center mb-2">
               <span className="fs-3 me-2">🌾</span>
               <h5 className="text-primary-green fw-bold mb-0">Gram Sahayak</h5>
             </div>
-            <p className="small text-muted mb-3">
-              Gram Sahayak is a digital rural governance and e-services portal empowering villagers with instant scheme access, agricultural mandi rates, grievance redressal, and direct rural commerce.
+            <p className="small text-muted mb-2">
+              Digital rural services portal connecting villagers directly with Gram Panchayat for welfare scheme applications, grievance redressal, farmer market, and announcements.
             </p>
             <div className="d-flex gap-2">
-              <span className="badge bg-light text-success border px-2 py-1"><i className="bi bi-shield-check me-1"></i> Official Portal</span>
+              <span className="badge bg-light text-success border px-2 py-1"><i className="bi bi-shield-check me-1"></i> Mini Project</span>
               <span className="badge bg-light text-warning border px-2 py-1"><i className="bi bi-patch-check me-1"></i> Digital India</span>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="col-6 col-md-2">
-            <h6 className="text-dark fw-bold mb-3 small text-uppercase">Public Services</h6>
-            <ul className="list-unstyled small d-flex flex-column gap-2 mb-0">
-              <li><Link to="/schemes" className="text-decoration-none text-secondary">Welfare Schemes</Link></li>
-              <li><Link to="/mandi" className="text-decoration-none text-secondary">Mandi Prices</Link></li>
-              <li><Link to="/market" className="text-decoration-none text-secondary">Village Market</Link></li>
-              <li><Link to="/events" className="text-decoration-none text-secondary">Camps & Events</Link></li>
-              <li><Link to="/notices" className="text-decoration-none text-secondary">Public Notices</Link></li>
+          <div className="col-6 col-md-3">
+            <h6 className="text-dark fw-bold mb-2 small text-uppercase">Citizen Services</h6>
+            <ul className="list-unstyled small d-flex flex-column gap-1 mb-0">
+              <li><Link to="/schemes" className="text-decoration-none text-secondary">Sarkari Yojanas</Link></li>
+              <li><Link to="/complaints" className="text-decoration-none text-secondary">Shikayat Nivaran</Link></li>
+              <li><Link to="/market" className="text-decoration-none text-secondary">Krishi Bazaar</Link></li>
+              <li><Link to="/notices" className="text-decoration-none text-secondary">Suchna Patra</Link></li>
             </ul>
           </div>
 
-          {/* Village Support */}
-          <div className="col-6 col-md-2">
-            <h6 className="text-dark fw-bold mb-3 small text-uppercase">Village Support</h6>
-            <ul className="list-unstyled small d-flex flex-column gap-2 mb-0">
-              <li><Link to="/helpline" className="text-decoration-none text-secondary">Helpline Directory</Link></li>
-              <li><Link to="/members" className="text-decoration-none text-secondary">Panchayat Members</Link></li>
-              <li><Link to="/complaints" className="text-decoration-none text-secondary">File Grievance</Link></li>
-              <li><Link to="/login" className="text-decoration-none text-secondary">Resident Login</Link></li>
-              <li><Link to="/register" className="text-decoration-none text-secondary">New Registration</Link></li>
-            </ul>
-          </div>
-
-          {/* Contact & Emergency Snippet */}
-          <div className="col-12 col-md-4">
-            <h6 className="text-dark fw-bold mb-3 small text-uppercase">Gram Panchayat Office</h6>
-            <div className="small text-muted mb-2">
-              <i className="bi bi-geo-alt-fill text-danger me-2"></i>
-              Gram Panchayat Bhawan, Main Road, Tehsil Block, PIN - 466001
+          {/* Contact Snippet */}
+          <div className="col-6 col-md-4">
+            <h6 className="text-dark fw-bold mb-2 small text-uppercase">Gram Panchayat Office</h6>
+            <div className="small text-muted mb-1">
+              <i className="bi bi-geo-alt-fill text-danger me-1"></i> Panchayat Bhawan, Gram Rampur
             </div>
-            <div className="small text-muted mb-2">
-              <i className="bi bi-envelope-fill text-primary me-2"></i>
-              grampanchayat.sahayak@gov.in
+            <div className="small text-muted mb-1">
+              <i className="bi bi-telephone-fill text-success me-1"></i> Helpline: 1800-180-1551 (Toll Free)
             </div>
-            <div className="small text-muted mb-3">
-              <i className="bi bi-telephone-fill text-success me-2"></i>
-              Emergency Helpline: <strong>112 / 108</strong> (24x7)
-            </div>
-            <div className="p-2 bg-light rounded-3 small border">
-              <i className="bi bi-clock-history me-1 text-primary"></i> <strong>Office Timings:</strong> Mon - Sat (10:00 AM - 05:00 PM)
+            <div className="small text-muted">
+              <i className="bi bi-clock-history me-1 text-primary"></i> Mon - Sat (10:00 AM - 05:00 PM)
             </div>
           </div>
         </div>
 
-        <hr className="my-4" />
+        <hr className="my-3" />
 
         {/* Bottom copyright notice */}
         <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center small text-muted">
           <div>
-            &copy; {new Date().getFullYear()} Gram Sahayak Portal. Built for Rural Welfare.
+            &copy; {new Date().getFullYear()} Gram Sahayak — Rural Digital Governance Portal.
           </div>
-          <div className="mt-2 mt-sm-0">
-            A Lab Project for College Curriculum. Plain MERN Stack.
+          <div className="mt-1 mt-sm-0">
+            College Mini Project &bull; Full Stack MERN
           </div>
         </div>
       </div>

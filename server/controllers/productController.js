@@ -67,68 +67,70 @@ const getMyProducts = async (req, res) => {
 // Add a new product to the village market
 const createProduct = async (req, res) => {
   try {
-    const { name, category, price, quantity, unit, description, isAvailable } = req.body;
+    const { name, category, price, quantity, unit, description, location, contactPhone, isAvailable } = req.body;
 
-    // Validate required fields
     if (!name || !category || price === undefined || quantity === undefined) {
-      return res.status(400).json({ message: 'Please provide product name, category, price, and quantity' });
+      return res.status(400).json({ message: 'Name, category, price, and quantity are required' });
     }
 
-    const validCategories = ['vegetables', 'grains', 'dairy', 'fruits', 'handicrafts', 'other'];
-    if (!validCategories.includes(category)) {
-      return res.status(400).json({ message: 'Invalid product category' });
+    if (Number(price) < 0 || Number(quantity) < 0) {
+      return res.status(400).json({ message: 'Price and quantity must be non-negative numbers' });
     }
 
-    const newProduct = await Product.create({
+    const product = await Product.create({
       seller: req.user._id,
       name: name.trim(),
       category: category.trim(),
       price: Number(price),
       quantity: Number(quantity),
-      unit: unit ? unit.trim() : 'kg',
+      unit: unit || 'kg',
+      location: location ? location.trim() : 'Gram Panchayat Rampur',
+      contactPhone: contactPhone ? contactPhone.trim() : '9876543210',
       description: description ? description.trim() : '',
       isAvailable: isAvailable !== undefined ? isAvailable : true
     });
 
-    res.status(201).json({ message: 'Product listed successfully', product: newProduct });
+    res.status(201).json(product);
   } catch (error) {
     console.error('Create product error:', error.message);
-    res.status(500).json({ message: 'Server error adding product', error: error.message });
+    res.status(500).json({ message: 'Server error creating product', error: error.message });
   }
 };
 
-// Update an existing product (only the seller can update)
+// Update an existing product (only the seller can modify their listing)
 const updateProduct = async (req, res) => {
   try {
-    const { name, category, price, quantity, unit, description, isAvailable } = req.body;
-
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Verify ownership
-    if (product.seller.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: 'Not authorized: You can only edit your own products' });
+    // Ownership check: only the seller or panchayat admin can edit
+    if (product.seller.toString() !== req.user._id.toString() && req.user.role !== 'panchayat') {
+      return res.status(403).json({ message: 'You are not authorized to edit this product' });
     }
 
-    if (name) product.name = name.trim();
-    if (category) product.category = category.trim();
+    const { name, category, price, quantity, unit, description, location, contactPhone, isAvailable } = req.body;
+
+    if (name !== undefined) product.name = name.trim();
+    if (category !== undefined) product.category = category.trim();
     if (price !== undefined) product.price = Number(price);
     if (quantity !== undefined) product.quantity = Number(quantity);
-    if (unit) product.unit = unit.trim();
+    if (unit !== undefined) product.unit = unit;
+    if (location !== undefined) product.location = location.trim();
+    if (contactPhone !== undefined) product.contactPhone = contactPhone.trim();
     if (description !== undefined) product.description = description.trim();
-    if (isAvailable !== undefined) product.isAvailable = Boolean(isAvailable);
+    if (isAvailable !== undefined) product.isAvailable = isAvailable;
 
-    await product.save();
-    res.status(200).json({ message: 'Product updated successfully', product });
+    const updatedProduct = await product.save();
+    res.status(200).json(updatedProduct);
   } catch (error) {
     console.error('Update product error:', error.message);
     res.status(500).json({ message: 'Server error updating product', error: error.message });
   }
 };
 
-// Delete a product (only the seller can delete)
+// Delete a product listing
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -136,9 +138,9 @@ const deleteProduct = async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Verify ownership
-    if (product.seller.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: 'Not authorized: You can only delete your own products' });
+    // Ownership check: only seller or panchayat can delete
+    if (product.seller.toString() !== req.user._id.toString() && req.user.role !== 'panchayat') {
+      return res.status(403).json({ message: 'You are not authorized to delete this product' });
     }
 
     await Product.deleteOne({ _id: req.params.id });
@@ -149,11 +151,34 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+// Toggle product in-stock / sold-out availability
+const toggleAvailability = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    if (product.seller.toString() !== req.user._id.toString() && req.user.role !== 'panchayat') {
+      return res.status(403).json({ message: 'You are not authorized to modify this product' });
+    }
+
+    product.isAvailable = !product.isAvailable;
+    const updatedProduct = await product.save();
+
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error('Toggle availability error:', error.message);
+    res.status(500).json({ message: 'Server error toggling availability', error: error.message });
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   getMyProducts,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  toggleAvailability
 };
