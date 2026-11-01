@@ -2,7 +2,7 @@
 // Tests all 5 Core Modules: Auth, Schemes, Complaints, Krishi Market, and Notices
 const http = require('http');
 
-const PORT = 5001;
+const PORT = process.env.PORT || 5005;
 
 function request(method, path, body = null, token = null) {
   return new Promise((resolve, reject) => {

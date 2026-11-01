@@ -18,7 +18,7 @@ const noticeRoutes = require('./routes/noticeRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5005;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/gram_sahayak';
 
 // Built-in and third-party middleware

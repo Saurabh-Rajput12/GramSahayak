@@ -205,7 +205,7 @@ All test accounts share the password **`password123`**:
 cd server
 npm install
 node seed.js      # Populates test users, schemes, complaints, products, and notices
-node server.js    # Runs backend on http://localhost:5001
+node server.js    # Runs backend on http://localhost:5005
 ```
 
 ### Step 2: Start Frontend
